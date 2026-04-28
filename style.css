@@ -930,6 +930,63 @@ ul   { list-style: none; }
 }
 
 /* =============================================
+   Scroll Rocket
+============================================= */
+.scroll-rocket {
+  position: fixed;
+  right: clamp(16px, 3vw, 32px);
+  top: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 50;
+  transform: translateY(calc((1 - var(--rocket-progress, 0)) * 88vh + var(--rocket-progress, 0) * 6vh));
+  transition: transform 0.12s linear;
+  will-change: transform;
+}
+.scroll-rocket i {
+  font-size: 26px;
+  color: var(--accent-cyan);
+  display: block;
+  transform: rotate(-45deg);
+  filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.55));
+  animation: rocket-bob 1.6s ease-in-out infinite;
+}
+.scroll-rocket::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 8px;
+  height: 26px;
+  transform: translate(-50%, -4px);
+  background: linear-gradient(to bottom,
+    rgba(245, 158, 11, 0.95) 0%,
+    rgba(6, 182, 212, 0.55) 55%,
+    transparent 100%);
+  border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%;
+  filter: blur(2px);
+  animation: rocket-flame 0.14s steps(2) infinite;
+  transform-origin: top center;
+}
+@keyframes rocket-bob {
+  0%, 100% { transform: rotate(-45deg) translateX(0); }
+  50%       { transform: rotate(-45deg) translateX(2px); }
+}
+@keyframes rocket-flame {
+  0%   { transform: translate(-50%, -4px) scaleY(0.85) scaleX(1.05); opacity: 0.85; }
+  50%  { transform: translate(-50%, -4px) scaleY(1.15) scaleX(0.85); opacity: 1; }
+  100% { transform: translate(-50%, -4px) scaleY(0.95) scaleX(1.0);  opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-rocket { display: none; }
+}
+
+/* =============================================
    Responsive — Tablet
 ============================================= */
 @media (max-width: 900px) {
@@ -971,6 +1028,7 @@ ul   { list-style: none; }
   .hero-stats        { padding: 16px 20px; }
   .stat              { padding: 0 16px; }
   .section           { padding: 72px 0; }
+  .scroll-rocket     { display: none; }
 }
 
 @media (max-width: 480px) {

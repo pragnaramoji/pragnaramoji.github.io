@@ -94,6 +94,23 @@ const counterObserver = new IntersectionObserver(entries => {
 document.querySelectorAll('.stat-value[data-count]')
   .forEach(el => counterObserver.observe(el));
 
+// ── Scroll rocket ─────────────────────────────────────────────────
+const scrollRocket = document.getElementById('scrollRocket');
+let rocketTicking = false;
+function updateRocket() {
+  if (rocketTicking) return;
+  rocketTicking = true;
+  requestAnimationFrame(() => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    scrollRocket.style.setProperty('--rocket-progress', progress.toFixed(4));
+    rocketTicking = false;
+  });
+}
+window.addEventListener('scroll', updateRocket, { passive: true });
+window.addEventListener('resize', updateRocket);
+updateRocket();
+
 // ── Resume button placeholder ─────────────────────────────────────
 document.getElementById('resumeBtn')?.addEventListener('click', e => {
   // Replace href="#" with your actual resume PDF path, e.g. href="resume.pdf"
